@@ -38,32 +38,7 @@ router.get("/:id", getCharacter, async (req, res) => {
 
 // POST/create
 router.post("/", async (req, res) => {
-  const {
-    name,
-    aliases,
-    age,
-    gender,
-    species,
-    abilities,
-    occupation,
-    knownAllies,
-    knownEnemies,
-    status,
-    threatLevel,
-  } = req.body;
-  const character = new Character({
-    name,
-    aliases,
-    age,
-    gender,
-    species,
-    abilities,
-    occupation,
-    knownAllies,
-    knownEnemies,
-    status,
-    threatLevel,
-  });
+  const character = new Character(req.body);
   try {
     const newCharacter = await character.save();
     res.status(201).json(newCharacter);
@@ -74,12 +49,7 @@ router.post("/", async (req, res) => {
 
 // PATCH/update
 router.patch("/:id", getCharacter, async (req, res) => {
-  if (req.body.name != null) {
-    res.character.name = req.body.name;
-  }
-  if (req.body.occupation != null) {
-    res.character.occupation = req.body.occupation;
-  }
+  Object.assign(res.character, req.body);
   try {
     const updatedCharacter = await res.character.save();
     res.json(updatedCharacter);
