@@ -10,8 +10,17 @@ POST http://localhost:8000/characters
 Content-Type: application/json
 
 {
-    "name": "Hughie Campbell",
-    "occupation": "fugitive"
+  "name": "Homelander",
+  "aliases": ["The True Hero", "Guardian"],
+  "age": 40,
+  "gender": "male",
+  "species": "supe",
+  "abilities": ["flight", "super strength", "heat vision"],
+  "occupation": "Leader of The Seven",
+  "knownAllies": ["Queen Maeve", "A-Train"],
+  "knownEnemies": ["The Boys"],
+  "status": "alive",
+  "threatLevel": "high"
 }
 
 
@@ -26,6 +35,8 @@ PATCH http://localhost:8000/characters/67d33888a991f3b3a5f3e5be
 Content-Type: application/json
 
 {
-    "name": "Hughie Campbell Jr.",
-    "occupation": "fugitive"
+  "name": "Starlight",
+  "gender": "female",
+  "species": "supe",
+  "occupation": "Member of The Seven"
 }
