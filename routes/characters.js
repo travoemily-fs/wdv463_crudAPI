@@ -38,9 +38,31 @@ router.get("/:id", getCharacter, async (req, res) => {
 
 // POST/create
 router.post("/", async (req, res) => {
+  const {
+    name,
+    aliases,
+    age,
+    gender,
+    species,
+    abilities,
+    occupation,
+    knownAllies,
+    knownEnemies,
+    status,
+    threatLevel,
+  } = req.body;
   const character = new Character({
-    name: req.body.name,
-    occupation: req.body.occupation,
+    name,
+    aliases,
+    age,
+    gender,
+    species,
+    abilities,
+    occupation,
+    knownAllies,
+    knownEnemies,
+    status,
+    threatLevel,
   });
   try {
     const newCharacter = await character.save();
