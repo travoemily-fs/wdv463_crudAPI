@@ -1,0 +1,31 @@
+GET http://localhost:8000/characters 
+
+###
+GET http://localhost:8000/characters/67d33866a991f3b3a5f3e5bc 
+
+
+###
+
+POST http://localhost:8000/characters 
+Content-Type: application/json
+
+{
+    "name": "Hughie Campbell",
+    "occupation": "fugitive"
+}
+
+
+###
+
+DELETE http://localhost:8000/characters/67d33866a991f3b3a5f3e5bc 
+
+
+###
+
+PATCH http://localhost:8000/characters/67d33888a991f3b3a5f3e5be 
+Content-Type: application/json
+
+{
+    "name": "Hughie Campbell Jr.",
+    "occupation": "fugitive"
+}
