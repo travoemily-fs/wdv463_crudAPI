@@ -49,7 +49,39 @@ router.post("/", async (req, res) => {
 
 // PATCH/update
 router.patch("/:id", getCharacter, async (req, res) => {
-  Object.assign(res.character, req.body);
+  if (req.body.name != null) {
+    res.character.name = req.body.name;
+  }
+  if (req.body.occupation != null) {
+    res.character.occupation = req.body.occupation;
+  }
+  if (req.body.aliases != null) {
+    res.character.aliases = req.body.aliases;
+  }
+  if (req.body.age != null) {
+    res.character.age = req.body.age;
+  }
+  if (req.body.gender != null) {
+    res.character.gender = req.body.gender;
+  }
+  if (req.body.species != null) {
+    res.character.species = req.body.species;
+  }
+  if (req.body.abilities != null) {
+    res.character.abilities = req.body.abilities;
+  }
+  if (req.body.knownAllies != null) {
+    res.character.knownAllies = req.body.knownAllies;
+  }
+  if (req.body.knownEnemies != null) {
+    res.character.knownEnemies = req.body.knownEnemies;
+  }
+  if (req.body.status != null) {
+    res.character.status = req.body.status;
+  }
+  if (req.body.threatLevel != null) {
+    res.character.threatLevel = req.body.threatLevel;
+  }
   try {
     const updatedCharacter = await res.character.save();
     res.json(updatedCharacter);
