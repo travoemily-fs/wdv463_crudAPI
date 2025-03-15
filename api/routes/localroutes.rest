@@ -1,7 +1,7 @@
 GET http://localhost:8000/characters 
 
 ###
-GET http://localhost:8000/characters/67d33866a991f3b3a5f3e5bc 
+GET http://localhost:8000/characters/67d5bf640e97864e95bfb7ca
 
 
 ###
@@ -26,17 +26,13 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:8000/characters/67d33866a991f3b3a5f3e5bc 
-
+DELETE http://localhost:8000/characters/67d33888a991f3b3a5f3e5be
 
 ###
 
-PATCH http://localhost:8000/characters/67d33888a991f3b3a5f3e5be 
+PATCH http://localhost:8000/characters/67d5bf640e97864e95bfb7ca
 Content-Type: application/json
 
 {
-  "name": "Starlight",
-  "gender": "female",
-  "species": "supe",
-  "occupation": "Member of The Seven"
+  "name": "The Homelander"
 }
