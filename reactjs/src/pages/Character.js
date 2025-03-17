@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import "../App.css";
+import { Link as RouterLink, useParams, useNavigate } from "react-router-dom";
+import {
+  Container,
+  Typography,
+  Box,
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
 function Character() {
   const [characters, setCharacters] = useState(null);
@@ -9,15 +19,16 @@ function Character() {
 
   const [values, setValues] = useState({
     name: "",
-    aliases: "", // convert to array on submit
+    aliases: "",
     age: "",
     species: "",
-    abilities: "", // convert to array on submit
+    abilities: "",
     occupation: "",
-    knownAllies: "", // convert to array on submit
-    knownEnemies: "", // convert to array on submit
-    status: "alive", // default schema value
-    threatLevel: "none", // default schema value
+    knownAllies: "",
+    knownEnemies: "",
+    status: "alive",
+    threatLevel: "none",
+    gender: "",
   });
 
   const { id } = useParams();
@@ -28,7 +39,6 @@ function Character() {
       ? `http://localhost:8000/api/v1`
       : process.env.REACT_APP_BASE_URL;
 
-  // simulates unmounting
   let ignore = false;
   useEffect(() => {
     if (!ignore) {
@@ -39,7 +49,6 @@ function Character() {
     };
   }, []);
 
-  // GET CHARACTER
   const getCharacter = async () => {
     setLoading(true);
     try {
@@ -49,14 +58,14 @@ function Character() {
           console.log({ data });
           setValues({
             name: data.name || "",
-            aliases: data.aliases ? data.aliases.join(", ") : "", // convert array to string
+            aliases: data.aliases ? data.aliases.join(", ") : "",
             age: data.age ? data.age.toString() : "",
             gender: data.gender || "",
             species: data.species || "",
-            abilities: data.abilities ? data.abilities.join(", ") : "", // convert array to string
+            abilities: data.abilities ? data.abilities.join(", ") : "",
             occupation: data.occupation || "",
-            knownAllies: data.knownAllies ? data.knownAllies.join(", ") : "", // convert array to string
-            knownEnemies: data.knownEnemies ? data.knownEnemies.join(", ") : "", // convert array to string
+            knownAllies: data.knownAllies ? data.knownAllies.join(", ") : "",
+            knownEnemies: data.knownEnemies ? data.knownEnemies.join(", ") : "",
             status: data.status || "alive",
             threatLevel: data.threatLevel || "none",
           });
@@ -68,7 +77,6 @@ function Character() {
     }
   };
 
-  // DELETE CHARACTER
   const deleteCharacter = async () => {
     try {
       await fetch(`${API_BASE}/characters/${id}`, {
@@ -86,9 +94,7 @@ function Character() {
     }
   };
 
-  // UPDATE CHARACTER
   const updateCharacter = async () => {
-    // converting the raw string inputs from the form that need to be processed as arrays to correct format
     const formattedValues = {
       ...values,
       age: values.age === "" ? null : Number(values.age),
@@ -115,7 +121,7 @@ function Character() {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(formattedValues), // call for formatted values
+        body: JSON.stringify(formattedValues),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -128,183 +134,194 @@ function Character() {
       setLoading(false);
     }
   };
-  // SUBMIT FOR UPDATE HANDLER
+
   const handleSubmit = (event) => {
     event.preventDefault();
     updateCharacter();
   };
 
-  // UPDATE CHARACTER HANDLER
   const handleInputChanges = (event) => {
     event.persist();
-    setValues((values) => ({
-      ...values,
+    setValues((prev) => ({
+      ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Vought International Database</h1>
+    <Container sx={{ py: 4 }}>
+      <Typography variant="h3" gutterBottom>
+        Vought International Database
+      </Typography>
 
-        <div className="profile-details">
-          <p>
-            <strong>Name:</strong> {values.name}
-          </p>
-          <p>
-            <strong>Aliases:</strong> {values.aliases}
-          </p>
-          <p>
-            <strong>Age:</strong> {values.age}
-          </p>
-          <p>
-            <strong>Gender:</strong> {values.gender}
-          </p>
-          <p>
-            <strong>Species:</strong> {values.species}
-          </p>
-          <p>
-            <strong>Abilities:</strong> {values.abilities}
-          </p>
-          <p>
-            <strong>Occupation:</strong> {values.occupation}
-          </p>
-          <p>
-            <strong>Known Allies:</strong> {values.knownAllies}
-          </p>
-          <p>
-            <strong>Known Enemies:</strong> {values.knownEnemies}
-          </p>
-          <p>
-            <strong>Status:</strong> {values.status}
-          </p>
-          <p>
-            <strong>Threat Level:</strong> {values.threatLevel}
-          </p>
-        </div>
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Profile Details
+        </Typography>
+        <Typography variant="body1">
+          <strong>Name:</strong> {values.name}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Aliases:</strong> {values.aliases}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Age:</strong> {values.age}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Gender:</strong> {values.gender}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Species:</strong> {values.species}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Abilities:</strong> {values.abilities}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Occupation:</strong> {values.occupation}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Known Allies:</strong> {values.knownAllies}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Known Enemies:</strong> {values.knownEnemies}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Status:</strong> {values.status}
+        </Typography>
+        <Typography variant="body1">
+          <strong>Threat Level:</strong> {values.threatLevel}
+        </Typography>
+      </Box>
 
-        <button onClick={() => deleteCharacter()}>Delete Profile</button>
-        <Link to="/">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
+      <Box sx={{ mb: 4 }}>
+        <Button
+          variant="contained"
+          color="error"
+          onClick={deleteCharacter}
+          sx={{ mr: 2 }}>
+          Delete Profile
+        </Button>
+        <Button variant="outlined" component={RouterLink} to="/" sx={{ mr: 2 }}>
+          Home
+        </Button>
+        <Button variant="outlined" component={RouterLink} to="/dashboard">
+          Dashboard
+        </Button>
+      </Box>
 
-        <form onSubmit={(event) => handleSubmit(event)}>
-          <label>
-            Name:
-            <input
-              type="text"
-              name="name"
-              value={values.name}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Aliases:
-            <input
-              type="text"
-              name="aliases"
-              value={values.aliases}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Age:
-            <input
-              type="number"
-              name="age"
-              value={values.age}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Gender:
-            <select
-              name="gender"
-              value={values.gender}
-              onChange={handleInputChanges}>
-              <option value="">Select Gender</option>
-              <option value="female">Female</option>
-              <option value="male">Male</option>
-              <option value="non binary">Non Binary</option>
-              <option value="unknown">Unknown</option>
-            </select>
-          </label>
-          <label>
-            Species:
-            <select
-              name="species"
-              value={values.species}
-              onChange={handleInputChanges}>
-              <option value="">Select Species</option>
-              <option value="supe">Supe</option>
-              <option value="human">Human</option>
-            </select>
-          </label>
-          <label>
-            Abilities:
-            <input
-              type="text"
-              name="abilities"
-              value={values.abilities}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Occupation:
-            <input
-              type="text"
-              name="occupation"
-              value={values.occupation}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Known Allies:
-            <input
-              type="text"
-              name="knownAllies"
-              value={values.knownAllies}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Known Enemies:
-            <input
-              type="text"
-              name="knownEnemies"
-              value={values.knownEnemies}
-              onChange={handleInputChanges}
-            />
-          </label>
-          <label>
-            Status:
-            <select
-              name="status"
-              value={values.status}
-              onChange={handleInputChanges}>
-              <option value="">Select Status</option>
-              <option value="alive">Alive</option>
-              <option value="deceased">Deceased</option>
-              <option value="unknown">Unknown</option>
-            </select>
-          </label>
-          <label>
-            Threat Level:
-            <select
-              name="threatLevel"
-              value={values.threatLevel}
-              onChange={handleInputChanges}>
-              <option value="">Select Threat Level</option>
-              <option value="high">High</option>
-              <option value="moderate">Moderate</option>
-              <option value="low">Low</option>
-              <option value="none">None</option>
-            </select>
-          </label>
-          <input type="submit" value="submit" />
-        </form>
-      </header>
-    </div>
+      <Typography variant="h5" gutterBottom>
+        Update Profile
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+          maxWidth: 500,
+        }}>
+        <TextField
+          label="Name"
+          name="name"
+          value={values.name}
+          onChange={handleInputChanges}
+        />
+        <TextField
+          label="Aliases (comma separated)"
+          name="aliases"
+          value={values.aliases}
+          onChange={handleInputChanges}
+        />
+        <TextField
+          label="Age"
+          type="number"
+          name="age"
+          value={values.age}
+          onChange={handleInputChanges}
+        />
+        <FormControl fullWidth>
+          <InputLabel>Gender</InputLabel>
+          <Select
+            name="gender"
+            value={values.gender}
+            label="Gender"
+            onChange={handleInputChanges}>
+            <MenuItem value="">Select Gender</MenuItem>
+            <MenuItem value="female">Female</MenuItem>
+            <MenuItem value="male">Male</MenuItem>
+            <MenuItem value="non binary">Non Binary</MenuItem>
+            <MenuItem value="unknown">Unknown</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Species</InputLabel>
+          <Select
+            name="species"
+            value={values.species}
+            label="Species"
+            onChange={handleInputChanges}>
+            <MenuItem value="">Select Species</MenuItem>
+            <MenuItem value="supe">Supe</MenuItem>
+            <MenuItem value="human">Human</MenuItem>
+          </Select>
+        </FormControl>
+        <TextField
+          label="Abilities (comma separated)"
+          name="abilities"
+          value={values.abilities}
+          onChange={handleInputChanges}
+        />
+        <TextField
+          label="Occupation"
+          name="occupation"
+          value={values.occupation}
+          onChange={handleInputChanges}
+        />
+        <TextField
+          label="Known Allies (comma separated)"
+          name="knownAllies"
+          value={values.knownAllies}
+          onChange={handleInputChanges}
+        />
+        <TextField
+          label="Known Enemies (comma separated)"
+          name="knownEnemies"
+          value={values.knownEnemies}
+          onChange={handleInputChanges}
+        />
+        <FormControl fullWidth>
+          <InputLabel>Status</InputLabel>
+          <Select
+            name="status"
+            value={values.status}
+            label="Status"
+            onChange={handleInputChanges}>
+            <MenuItem value="">Select Status</MenuItem>
+            <MenuItem value="alive">Alive</MenuItem>
+            <MenuItem value="deceased">Deceased</MenuItem>
+            <MenuItem value="unknown">Unknown</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl fullWidth>
+          <InputLabel>Threat Level</InputLabel>
+          <Select
+            name="threatLevel"
+            value={values.threatLevel}
+            label="Threat Level"
+            onChange={handleInputChanges}>
+            <MenuItem value="">Select Threat Level</MenuItem>
+            <MenuItem value="high">High</MenuItem>
+            <MenuItem value="moderate">Moderate</MenuItem>
+            <MenuItem value="low">Low</MenuItem>
+            <MenuItem value="none">None</MenuItem>
+          </Select>
+        </FormControl>
+        <Button variant="contained" type="submit">
+          Update Profile
+        </Button>
+      </Box>
+    </Container>
   );
 }
 
