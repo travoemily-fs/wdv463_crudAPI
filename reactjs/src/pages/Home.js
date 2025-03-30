@@ -10,28 +10,23 @@ function Home() {
       </Typography>
 
       <Typography variant="body1" sx={{ mb: 2 }}>
-        Welcome to Vought International Database.
+        Security Clearance Check Required
       </Typography>
 
       <Box>
         <Button
           variant="contained"
-          color="primary"
           component={Link}
           to="/dashboard"
-          sx={styles.myBtn}>
+          sx={(theme) => ({
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+          })}>
           Go to Dashboard
         </Button>
-
       </Box>
     </Container>
   );
 }
 
 export default Home;
-
-const styles = {
-  myBtn: {
-    mx: 1,
-  },
-};

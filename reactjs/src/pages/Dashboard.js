@@ -15,6 +15,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Alert,
 } from "@mui/material";
 
 import AuthService from "../services/auth.service";
@@ -25,6 +26,7 @@ function Dashboard() {
   const [characters, setCharacters] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [authError, setAuthError] = useState(false);
 
   const [values, setValues] = useState({
     name: "",
@@ -56,6 +58,12 @@ function Dashboard() {
       },
       (error) => {
         console.log("secured page error:", error.response);
+        if (
+          error.response &&
+          (error.response.status === 401 || error.response.status === 403)
+        ) {
+          setAuthError(true);
+        }
         if (error.response && error.response.status === 403) {
           AuthService.logout();
           navigate(`/login`);
@@ -133,8 +141,7 @@ function Dashboard() {
     }
   };
 
-  JSON.parse(localStorage.getItem("user"))
-
+  JSON.parse(localStorage.getItem("user"));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -151,11 +158,14 @@ function Dashboard() {
 
   return (
     <Container sx={{ py: 4 }}>
+      {authError && (
+        <Alert severity="error" sx={{ mb: 3 }}>
+          You must be logged in to view and create profiles. Please log in
+          first.
+        </Alert>
+      )}
       <Typography variant="h3" gutterBottom>
         Vought International Database
-      </Typography>
-      <Typography variant="h5" gutterBottom>
-        Security Clearance: 5
       </Typography>
 
       <Button
@@ -166,7 +176,7 @@ function Dashboard() {
         style={{
           marginBottom: "50px",
         }}>
-        Go Home
+        Go Back Home
       </Button>
 
       <Typography variant="h5" gutterBottom>
@@ -198,119 +208,123 @@ function Dashboard() {
         </Typography>
       )}
 
-      <Typography variant="h5" gutterBottom>
-        Create New Profile
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          maxWidth: 400,
-        }}>
-        <TextField
-          label="Name"
-          name="name"
-          value={values.name}
-          onChange={handleInputChanges}
-          required
-        />
-        <TextField
-          label="Aliases (comma separated)"
-          name="aliases"
-          value={values.aliases}
-          onChange={handleInputChanges}
-        />
-        <TextField
-          label="Age"
-          type="number"
-          name="age"
-          value={values.age}
-          onChange={handleInputChanges}
-        />
-        <FormControl fullWidth>
-          <InputLabel>Gender</InputLabel>
-          <Select
-            name="gender"
-            value={values.gender}
-            label="Gender"
-            onChange={handleInputChanges}>
-            <MenuItem value="">Select Gender</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="non binary">Non Binary</MenuItem>
-            <MenuItem value="unknown">Unknown</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Species</InputLabel>
-          <Select
-            name="species"
-            value={values.species}
-            label="Species"
-            onChange={handleInputChanges}>
-            <MenuItem value="">Select Species</MenuItem>
-            <MenuItem value="supe">Supe</MenuItem>
-            <MenuItem value="human">Human</MenuItem>
-          </Select>
-        </FormControl>
-        <TextField
-          label="Abilities (comma separated)"
-          name="abilities"
-          value={values.abilities}
-          onChange={handleInputChanges}
-        />
-        <TextField
-          label="Occupation"
-          name="occupation"
-          value={values.occupation}
-          onChange={handleInputChanges}
-        />
-        <TextField
-          label="Known Allies (comma separated)"
-          name="knownAllies"
-          value={values.knownAllies}
-          onChange={handleInputChanges}
-        />
-        <TextField
-          label="Known Enemies (comma separated)"
-          name="knownEnemies"
-          value={values.knownEnemies}
-          onChange={handleInputChanges}
-        />
-        <FormControl fullWidth>
-          <InputLabel>Status</InputLabel>
-          <Select
-            name="status"
-            value={values.status}
-            label="Status"
-            onChange={handleInputChanges}>
-            <MenuItem value="">Select Status</MenuItem>
-            <MenuItem value="alive">Alive</MenuItem>
-            <MenuItem value="deceased">Deceased</MenuItem>
-            <MenuItem value="unknown">Unknown</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Threat Level</InputLabel>
-          <Select
-            name="threatLevel"
-            value={values.threatLevel}
-            label="Threat Level"
-            onChange={handleInputChanges}>
-            <MenuItem value="">Select Threat Level</MenuItem>
-            <MenuItem value="high">High</MenuItem>
-            <MenuItem value="moderate">Moderate</MenuItem>
-            <MenuItem value="low">Low</MenuItem>
-            <MenuItem value="none">None</MenuItem>
-          </Select>
-        </FormControl>
-        <Button variant="contained" type="submit">
-          Submit
-        </Button>
-      </Box>
+      {!authError && (
+        <>
+          <Typography variant="h5" gutterBottom>
+            Create New Profile
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              maxWidth: 400,
+            }}>
+            <TextField
+              label="Name"
+              name="name"
+              value={values.name}
+              onChange={handleInputChanges}
+              required
+            />
+            <TextField
+              label="Aliases (comma separated)"
+              name="aliases"
+              value={values.aliases}
+              onChange={handleInputChanges}
+            />
+            <TextField
+              label="Age"
+              type="number"
+              name="age"
+              value={values.age}
+              onChange={handleInputChanges}
+            />
+            <FormControl fullWidth>
+              <InputLabel>Gender</InputLabel>
+              <Select
+                name="gender"
+                value={values.gender}
+                label="Gender"
+                onChange={handleInputChanges}>
+                <MenuItem value="">Select Gender</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="non binary">Non Binary</MenuItem>
+                <MenuItem value="unknown">Unknown</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>Species</InputLabel>
+              <Select
+                name="species"
+                value={values.species}
+                label="Species"
+                onChange={handleInputChanges}>
+                <MenuItem value="">Select Species</MenuItem>
+                <MenuItem value="supe">Supe</MenuItem>
+                <MenuItem value="human">Human</MenuItem>
+              </Select>
+            </FormControl>
+            <TextField
+              label="Abilities (comma separated)"
+              name="abilities"
+              value={values.abilities}
+              onChange={handleInputChanges}
+            />
+            <TextField
+              label="Occupation"
+              name="occupation"
+              value={values.occupation}
+              onChange={handleInputChanges}
+            />
+            <TextField
+              label="Known Allies (comma separated)"
+              name="knownAllies"
+              value={values.knownAllies}
+              onChange={handleInputChanges}
+            />
+            <TextField
+              label="Known Enemies (comma separated)"
+              name="knownEnemies"
+              value={values.knownEnemies}
+              onChange={handleInputChanges}
+            />
+            <FormControl fullWidth>
+              <InputLabel>Status</InputLabel>
+              <Select
+                name="status"
+                value={values.status}
+                label="Status"
+                onChange={handleInputChanges}>
+                <MenuItem value="">Select Status</MenuItem>
+                <MenuItem value="alive">Alive</MenuItem>
+                <MenuItem value="deceased">Deceased</MenuItem>
+                <MenuItem value="unknown">Unknown</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <InputLabel>Threat Level</InputLabel>
+              <Select
+                name="threatLevel"
+                value={values.threatLevel}
+                label="Threat Level"
+                onChange={handleInputChanges}>
+                <MenuItem value="">Select Threat Level</MenuItem>
+                <MenuItem value="high">High</MenuItem>
+                <MenuItem value="moderate">Moderate</MenuItem>
+                <MenuItem value="low">Low</MenuItem>
+                <MenuItem value="none">None</MenuItem>
+              </Select>
+            </FormControl>
+            <Button variant="contained" type="submit">
+              Submit
+            </Button>
+          </Box>
+        </>
+      )}
     </Container>
   );
 }

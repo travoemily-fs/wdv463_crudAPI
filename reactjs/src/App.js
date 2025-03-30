@@ -7,7 +7,8 @@ import Character from "./pages/Character";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import AuthService from "./services/auth.service";
-import { Container, Typography, Button, Box } from "@mui/material";
+import { Button } from "@mui/material";
+import { grey } from "@mui/material/colors";
 
 function App() {
   const [currentUser, setCurrentUser] = useState(false);
@@ -21,6 +22,7 @@ function App() {
 
   const logOut = () => {
     AuthService.logout();
+    setCurrentUser(false); // controls log in / log out switch
   };
 
   return (
@@ -34,14 +36,40 @@ function App() {
           sx={styles.myBtn}>
           Sign up
         </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/login"
-          sx={styles.myBtn}>
-          Login
-        </Button>
+
+        {currentUser ? (
+          <Button
+            variant="contained"
+            color="dark"
+            onClick={logOut}
+            sx={(theme) => ({
+              backgroundColor: theme.palette.secondary.dark,
+              color: theme.palette.secondary.contrastText,
+              "&:hover": {
+                backgroundColor: theme.palette.secondary.main,
+              },
+            })}
+            component={Link}
+            to="/">
+            Logout
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="dark"
+            component={Link}
+            to="/login"
+            sx={(theme) => ({
+              backgroundColor: theme.palette.secondary.dark,
+              color: theme.palette.secondary.contrastText,
+              "&:hover": {
+                backgroundColor: theme.palette.secondary.main,
+              },
+            })}
+            >
+            Login
+          </Button>
+        )}
       </div>
       <section>
         <Routes>
@@ -64,7 +92,7 @@ const styles = {
     marginLeft: 3,
   },
   header: {
-    backgroundColor: "blue",
+    backgroundColor: grey[900],
     height: "100px",
     alignContent: "center",
   },
