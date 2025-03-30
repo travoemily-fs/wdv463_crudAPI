@@ -18,12 +18,20 @@ function Home() {
           variant="contained"
           color="primary"
           component={Link}
-          to="/dashboard">
+          to="/dashboard"
+          sx={styles.myBtn}>
           Go to Dashboard
         </Button>
+
       </Box>
     </Container>
   );
 }
 
 export default Home;
+
+const styles = {
+  myBtn: {
+    mx: 1,
+  },
+};

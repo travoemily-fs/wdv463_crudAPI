@@ -1,6 +1,6 @@
 // Dashboard.js
 import React, { useEffect, useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   Container,
   Typography,
@@ -16,6 +16,10 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+
+import AuthService from "../services/auth.service";
+import authHeader from "../services/auth-header";
+import CharacterService from "../services/characters.service";
 
 function Dashboard() {
   const [characters, setCharacters] = useState(null);
@@ -36,6 +40,8 @@ function Dashboard() {
     gender: "",
   });
 
+  const navigate = useNavigate();
+
   const API_BASE =
     process.env.NODE_ENV === "development"
       ? "http://localhost:8000/api/v1"
@@ -44,24 +50,43 @@ function Dashboard() {
   // simulates unmounting
   let ignore = false;
   useEffect(() => {
-    if (!ignore) {
+    CharacterService.getAllPrivateCharacters().then(
+      (response) => {
+        setCharacters(response.data);
+      },
+      (error) => {
+        console.log("secured page error:", error.response);
+        if (error.response && error.response.status === 403) {
+          AuthService.logout();
+          navigate(`/login`);
+        }
+      }
+    );
+    /*  if (!ignore) {
       getCharacters();
     }
     return () => {
       ignore = true;
-    };
+    }; */
   }, []);
 
   // GET ALL
   const getCharacters = async () => {
     setLoading(true);
     try {
-      await fetch(`${API_BASE}/characters`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log({ data });
-          setCharacters(data);
-        });
+      const res = await fetch(`${API_BASE}/characters`, {
+        headers: {
+          ...authHeader(),
+          "Content-type": "application/json",
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setCharacters(data);
     } catch (error) {
       setError(error.message || "Unexpected Error");
     } finally {
@@ -95,7 +120,10 @@ function Dashboard() {
     try {
       await fetch(`${API_BASE}/characters/`, {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: {
+          ...authHeader(),
+          "Content-type": "application/json",
+        },
         body: JSON.stringify(formattedValues),
       }).then(() => getCharacters());
     } catch (error) {
@@ -104,6 +132,9 @@ function Dashboard() {
       setLoading(false);
     }
   };
+
+  JSON.parse(localStorage.getItem("user"))
+
 
   const handleSubmit = (event) => {
     event.preventDefault();

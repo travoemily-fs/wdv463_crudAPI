@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
+const passport = require("passport");
 const Character = require("../models/character");
 
 // RESTful endpojnts
 // GET , POST , PATCH , DELETE
 
 // MIDDLEWARE
+const passportService = require("../services/passport");
+const protectedRoute = passport.authenticate("jwt", { session: false });
+
 const getCharacter = async (req, res, next) => {
   let character;
   try {
@@ -22,7 +26,7 @@ const getCharacter = async (req, res, next) => {
 };
 
 // GET ALL
-router.get("/", async (req, res) => {
+router.get("/", protectedRoute, async (req, res) => {
   try {
     const characters = await Character.find();
     res.json(characters);
