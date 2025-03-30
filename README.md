@@ -1,3 +1,37 @@
+# 🥳🎉 4.9 Assignment: CRUD API Deployment
+
+**✨ Objective:** Create a mobile application with CRUD functionality utilizing your previously built API.
+
+**ℹ️ Key topics:**
+
+1. Aligning suitable technology
+2. Working with React
+3. Utilizing a basic Deployment Workflow
+4. Utilizing databases and servers
+5. Managed deployments through GitHub
+6. Hosting and Services provided by PaaS (Platform as a service) and DaaS (Data as a service) providers
+
+**✏️🖇️ Overview:**
+
+> You will supplement a MERN application by utilizing React Native to add a Native Application Client to your tech stack.
+
+## ➡️ Specifications...
+
+- [x] **Create a user model**
+  - Add the ability to manage users to your application's database
+- [x] **Create a protected route middleware**
+  - Add a reusable middleware to check for authentication on specific routes
+- [x] **Create your own API**
+  - Your API must be usable via logged in or authenticated user
+- [x] **Demonstrate Your Application via a Web or Mobile Front-End Integration**
+  -  The application must be ready and able to run once pulled from a branch named 'production' within your GitHub repo.
+- **Site features:**
+  - [x] Add sign up page
+  - [x] Add a login page
+  - [x] Add a protected content view
+ 
+<hr>
+
 # 🧨💥 2.9 Assignment: CRUD API Deployment
 
 **🧲 Objective:** Deploy a MERN application with basic CRUD functionality.
